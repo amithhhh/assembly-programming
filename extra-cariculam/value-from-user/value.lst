@@ -1,0 +1,40 @@
+     1                                  ;asking value from user.
+     2                                  
+     3                                  section .data
+     4 00000000 456E74657220746865-     	prompt		db		"Enter the value: ", 10
+     4 00000009 2076616C75653A200A 
+     5                                  	length		equ		$ - prompt
+     6                                  section .bss
+     7 00000000 <res 14h>               	buf		resb		20
+     8                                  section .text
+     9                                  	global _start
+    10                                  
+    11                                  _start:
+    12                                  	;print prompt
+    13 00000000 B801000000              	mov rax, 1
+    14 00000005 BF01000000              	mov rdi, 1
+    15 0000000A 48BE-                   	mov rsi,prompt
+    15 0000000C [0000000000000000] 
+    16 00000014 BA12000000              	mov rdx, length
+    17 00000019 0F05                    	syscall
+    18                                  
+    19                                  	;read input
+    20 0000001B B800000000              	mov rax, 0
+    21 00000020 BF00000000              	mov rdi, 0
+    22 00000025 48BE-                   	mov rsi, buf
+    22 00000027 [0000000000000000] 
+    23 0000002F BA14000000              	mov rdx, 20
+    24 00000034 0F05                    	syscall
+    25                                  
+    26                                  	;print the value
+    27 00000036 4889C2                  	mov rdx, rax ;rax now contains no of buffer read.
+    28 00000039 B801000000              	mov rax, 1
+    29 0000003E BF01000000              	mov rdi, 1
+    30 00000043 48BE-                   	mov rsi, buf
+    30 00000045 [0000000000000000] 
+    31 0000004D 0F05                    	syscall
+    32                                  
+    33                                  	;exit
+    34 0000004F B83C000000              	mov rax, 60
+    35 00000054 4831FF                  	xor rdi, rdi
+    36 00000057 0F05                    	syscall
